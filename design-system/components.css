@@ -47,7 +47,8 @@
     inset 0 -1px 0 rgb(0 0 0 / .45),
     0 var(--dcx-degrau) 0 var(--dcx-degrau-preto), /* degrau: a espessura da tecla */
     0 calc(var(--dcx-degrau) + 2px) 3px 0 rgba(16, 23, 18, .28); /* 404 · alojamento-circular, deslocada pelo degrau */
-  transition: transform 40ms linear, box-shadow 40ms linear, background-color 90ms linear;
+  transition: transform var(--dcx-dur-tecla) var(--dcx-ease-tecla), box-shadow var(--dcx-dur-tecla) var(--dcx-ease-tecla), background-color var(--dcx-dur-tecla-cor) var(--dcx-ease-tecla),
+    text-decoration-color var(--dcx-dur-rapido) var(--dcx-ease-saida), text-decoration-thickness var(--dcx-dur-rapido) var(--dcx-ease-saida);
   -webkit-tap-highlight-color: transparent;
 }
 /* fosco de silicone na face (mesma camada da tecla do 404); some com --tex-intensity: 0 */
@@ -178,7 +179,7 @@
   border-radius: var(--dcx-r-3);
   background-color: var(--dcx-branco);
   box-shadow: var(--dcx-sombra-folha);
-  transition: transform 160ms cubic-bezier(.2, .7, .3, 1), box-shadow 160ms cubic-bezier(.2, .7, .3, 1);
+  transition: transform var(--dcx-dur-medio) var(--dcx-ease-saida), box-shadow var(--dcx-dur-medio) var(--dcx-ease-saida);
 }
 .dcx-maquina:hover, .dcx-maquina.is-hover {
   transform: translateY(-2px);
@@ -241,12 +242,14 @@
   position: relative; display: block; padding: 10px var(--dcx-e-2);
   font: var(--dcx-peso-medio) var(--dcx-t-sm)/1 var(--dcx-fonte); color: var(--dcx-cinza-700); text-decoration: none;
   border-radius: var(--dcx-r-1); white-space: nowrap;
+  transition: color var(--dcx-dur-rapido) var(--dcx-ease-saida);
 }
-.dcx-cab-nav a::after { content: ""; position: absolute; left: var(--dcx-e-2); right: var(--dcx-e-2); bottom: 4px; height: 2px; background: transparent; }
+/* o sublinhado tem sempre 2 px de altura; o "1 px" do hover é scaleY(.5) (transform não mexe no layout, e anima) */
+.dcx-cab-nav a::after { content: ""; position: absolute; left: var(--dcx-e-2); right: var(--dcx-e-2); bottom: 4px; height: 2px; background: transparent; transform: scaleY(.5); transform-origin: bottom; transition: background-color var(--dcx-dur-rapido) var(--dcx-ease-saida), transform var(--dcx-dur-rapido) var(--dcx-ease-saida); }
 .dcx-cab-nav a:hover, .dcx-cab-nav a.is-hover { color: var(--dcx-preto); }
-.dcx-cab-nav a:hover::after, .dcx-cab-nav a.is-hover::after { background: var(--dcx-vinho); height: 1px; }
+.dcx-cab-nav a:hover::after, .dcx-cab-nav a.is-hover::after { background: var(--dcx-vinho); }
 .dcx-cab-nav a[aria-current] { color: var(--dcx-preto); font-weight: var(--dcx-peso-negrito); }
-.dcx-cab-nav a[aria-current]::after { background: var(--dcx-preto); height: 2px; }
+.dcx-cab-nav a[aria-current]::after { background: var(--dcx-preto); transform: none; }
 .dcx-cab-nav a:focus-visible { outline: 2px solid var(--dcx-foco); outline-offset: -2px; }
 .dcx-cab .dcx-btn { margin-left: 0; }
 @media (max-width: 760px) {
@@ -287,8 +290,8 @@
 }
 .dcx-rod ul { margin: 0; padding: 0; list-style: none; }
 .dcx-rod li + li { margin-top: 2px; }
-.dcx-rod a { display: inline-block; padding: 6px 0; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-400); text-decoration: none; border-radius: var(--dcx-r-1); }
-.dcx-rod a:hover { color: var(--dcx-branco); text-decoration: underline; text-decoration-color: var(--dcx-rosa); text-underline-offset: .28em; }
+.dcx-rod a { display: inline-block; padding: 6px 0; font-size: var(--dcx-t-sm); color: var(--dcx-cinza-400); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: .28em; border-radius: var(--dcx-r-1); transition: color var(--dcx-dur-rapido) var(--dcx-ease-saida), text-decoration-color var(--dcx-dur-rapido) var(--dcx-ease-saida); }
+.dcx-rod a:hover { color: var(--dcx-branco); text-decoration-color: var(--dcx-rosa); }
 .dcx-rod a:focus-visible { outline: 2px solid var(--dcx-branco); outline-offset: 2px; color: var(--dcx-branco); }
 .dcx-rod .dcx-rod-pend { color: var(--dcx-cinza-400); font-size: var(--dcx-t-sm); padding: 6px 0; display: inline-block; }
 .dcx-rod-pe { max-width: var(--dcx-largura); margin: 0 auto; padding: 0 calc(var(--dcx-calha) + 24px) var(--dcx-e-6); }
@@ -337,8 +340,10 @@
   font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--dcx-cinza-200);
   background: linear-gradient(to bottom, #3b3935, #2b2a27);
   box-shadow: inset 0 1px 0 rgb(255 250 235 / .1), 0 2px 0 #0d0d0c;
+  transition: filter var(--dcx-dur-rapido) var(--dcx-ease-saida), transform var(--dcx-dur-tecla) var(--dcx-ease-tecla), box-shadow var(--dcx-dur-tecla) var(--dcx-ease-tecla);
 }
-.dcx-cod-copiar:hover { background: linear-gradient(to bottom, #45423d, #322f2c); }
+/* degradê não anima: o realce do hover é brilho (filter), que anima */
+.dcx-cod-copiar:hover { filter: brightness(1.14); }
 .dcx-cod-copiar:active { transform: translateY(2px); box-shadow: inset 0 2px 3px rgba(0, 0, 0, .5), 0 0 0 #0d0d0c; }
 .dcx-cod-copiar:focus-visible { outline: 2px solid var(--dcx-branco); outline-offset: 2px; }
 .dcx-cod pre {
@@ -392,7 +397,7 @@
   font: var(--dcx-peso-negrito) var(--dcx-t-xs)/1.2 var(--dcx-fonte); letter-spacing: var(--dcx-espaco-letra-rotulo); text-transform: uppercase;
 }
 .dcx-tab tbody th { font-weight: var(--dcx-peso-negrito); }
-.dcx-tab tbody tr { border-bottom: 1px solid var(--dcx-cinza-300); }
+.dcx-tab tbody tr { border-bottom: 1px solid var(--dcx-cinza-300); transition: background-color var(--dcx-dur-rapido) var(--dcx-ease-saida); }
 .dcx-tab tbody tr:last-child { border-bottom: 1px solid var(--dcx-preto); }
 .dcx-tab tbody tr:hover, .dcx-tab tbody tr.is-hover { background: rgb(219 213 200 / .45); }
 .dcx-tab .num { text-align: right; font-family: var(--dcx-fonte-mono); font-size: 13px; }
@@ -511,6 +516,7 @@ svg.dcx-marca { display: block; height: auto; fill: currentColor; }
 
 /* ============================================================ desligar movimento */
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   .dcx-btn, .dcx-maquina { transition: none; }
   .dcx-maquina:hover, .dcx-maquina.is-hover { transform: none; }
 }

@@ -125,6 +125,18 @@
   --dcx-r-5: 16px;  /* canto do painel */
   --dcx-r-cheio: 999px;
 
+  /* ---------------------------------------------------------------- movimento
+     Uma escala só para o site inteiro. Nenhum componente escreve "160ms" nem cubic-bezier à mão.
+     tecla  = o clique do hardware: curto e seco (linear de propósito, é o toque de uma tecla, não uma entrada de interface).
+     rapido = cor, sublinhado, foco · medio = elevação de cartão e botão · lento = o que se move mais de 8 px. */
+  --dcx-dur-tecla: 40ms;
+  --dcx-dur-tecla-cor: 90ms;
+  --dcx-dur-rapido: 120ms;
+  --dcx-dur-medio: 160ms;
+  --dcx-dur-lento: 260ms;
+  --dcx-ease-tecla: linear;
+  --dcx-ease-saida: cubic-bezier(.2, .7, .3, 1);   /* entra rápido e assenta: hover, elevação, aparecer */
+
   /* ---------------------------------------------------------------- bordas */
   --dcx-fio: 1px solid var(--dcx-cinza-300);
   --dcx-fio-forte: 1px solid var(--dcx-preto);
